@@ -13,6 +13,7 @@ import System.Posix.Process
 import System.IO
 import Data.Time.Clock.POSIX
 import System.Environment
+import Text.Printf
 
 import System.Posix.Internals
 import GHC.Event
@@ -72,14 +73,13 @@ main = do
     allocaBytes 1 $ \recvBuf -> do
     withCAStringLen "1" $ \(sendBuf, fromIntegral -> len) -> do
     replicateM_ n $ do
-        threadDelay 100
         a <- getTime
         c_send fd sendBuf (fromIntegral len) 0
         threadWaitRead (fromIntegral fd)
         c_recv fd recvBuf 1 0
         b <- getTime
         return ()
-        -- hPutStrLn stderr (show (b - a))
+        hPrintf stderr "%.6f\n" (b - a)
     withCAStringLen "0" $ \(sendBuf, len) -> do
     c_send fd sendBuf (fromIntegral len) 0
 
