@@ -79,7 +79,7 @@ main = do
         c_recv fd recvBuf 1 0
         b <- getTime
         return ()
-        hPrintf stderr "%.6f\n" (b - a)
+        hPrintf stdout "%.6f\n" (b - a)
     withCAStringLen "0" $ \(sendBuf, len) -> do
     c_send fd sendBuf (fromIntegral len) 0
 
